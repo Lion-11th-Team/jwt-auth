@@ -157,6 +157,7 @@ class OAuthTokenObtainView(APIView):
 
         # OAuth 제공 업체 provider에게 사용자 정보 요청
         response = self.reqeust_user_info(provider, access_token)
+        print(response.json())
         if response.status_code != 200:
             return Response(
                 {
