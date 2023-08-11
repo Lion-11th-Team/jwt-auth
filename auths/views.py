@@ -22,19 +22,22 @@ class OAuthTokenObtainView(APIView):
     redirect_uri = {
         'github': 'http://localhost:3000/githubCallback',
         'kakao': 'http://localhost:3000/kakaoCallback',
-        'google': 'http://localhost:3000/googleCallback'
+        'google': 'http://localhost:3000/googleCallback',
+        'naver': 'http://localhost:3000/NaverCallback',
     }
 
     access_token_uri = {
         'github': 'https://github.com/login/oauth/access_token',
         'kakao': 'https://kauth.kakao.com/oauth/token',
-        'google': 'https://oauth2.googleapis.com/token'
+        'google': 'https://oauth2.googleapis.com/token',
+        'naver': 'https://nid.naver.com/oauth2.0/token',
     }
 
     user_info_uri = {
         'github': 'https://api.github.com/user',
         'kakao': 'https://kapi.kakao.com/v2/user/me',
-        'google': 'https://www.googleapis.com/oauth2/v1/userinfo'
+        'google': 'https://www.googleapis.com/oauth2/v1/userinfo',
+        'naver': 'https://openapi.naver.com/v1/nid/me',
     }
 
 ### SECRET ###
@@ -42,6 +45,7 @@ class OAuthTokenObtainView(APIView):
         'github': '9b1df8c5638f9aab5523',
         'kakao': 'c98455cce815417ca28f9a973d9a24a7',
         'google': '374838732950-m9o6ik80g35uf9j7u7mh5jrhatl8869n.apps.googleusercontent.com',
+        'naver': 'L7sCGjzNp3uC8Bshbqcr',
     }
 
 ### SECRET ###
@@ -49,6 +53,7 @@ class OAuthTokenObtainView(APIView):
         'github': 'c00b4a7450430a65f2bbc90bfcac0d5cd85aa8d9',
         'kakao': '',
         'google': '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',
+        'naver': 'KllH4iJoMu',
     }
 
 ### Todo: 보안을 위해 값을 숨길 것
@@ -96,6 +101,14 @@ class OAuthTokenObtainView(APIView):
                     'client_secret': self.get_client_secret(provider),
                     'redirect_uri': self.redirect_uri[provider],
                     'code': access_code,
+                }
+            )
+        elif provider == 'naver':
+            return requests.get(
+                'https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=' + self.get_client_id(provider) + '&client_secret=' + self.get_client_secret(provider) + '&redirect_uri=' + self.redirect_uri[provider] + '&code=' + access_code + '&state=' + 'test',
+                headers={
+                    'X-Naver-Client-Id': self.get_client_id(provider),
+                    'X-Naver-Client-Secret': self.get_client_secret(provider),
                 }
             )
     
