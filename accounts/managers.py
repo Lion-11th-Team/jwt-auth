@@ -6,6 +6,7 @@ OAUTH_PROVIDER = [
     'google',
     'kakao',
     'github',
+    'naver',
 ]
 
 OAUTH_PROVIDER_CHOICES = [(provider, provider) for provider in OAUTH_PROVIDER]
